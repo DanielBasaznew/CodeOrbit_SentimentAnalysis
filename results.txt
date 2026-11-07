@@ -1,0 +1,59 @@
+============================================================
+           TASK 5 MODEL EVALUATION SUMMARY                  
+============================================================
+Total Dataset Rows: 73
+Training Samples: 58 | Test Samples: 15
+------------------------------------------------------------
+Approach A: VADER Test Accuracy        : 80.00%
+Approach B: Naive Bayes Test Accuracy  : 33.33%
+
+VADER Classification Report:
+              precision    recall  f1-score   support
+
+    positive       1.00      0.60      0.75         5
+     neutral       0.62      1.00      0.77         5
+    negative       1.00      0.80      0.89         5
+
+    accuracy                           0.80        15
+   macro avg       0.88      0.80      0.80        15
+weighted avg       0.88      0.80      0.80        15
+
+------------------------------------------------------------
+Naive Bayes Classification Report:
+              precision    recall  f1-score   support
+
+    positive       0.33      0.40      0.36         5
+     neutral       0.33      0.20      0.25         5
+    negative       0.33      0.40      0.36         5
+
+    accuracy                           0.33        15
+   macro avg       0.33      0.33      0.33        15
+weighted avg       0.33      0.33      0.33        15
+
+============================================================
+                 TEST SET ERROR AUDIT                       
+============================================================
+Text: "The screen measures six point five inches diagonally."
+  -> True: neutral  | VADER: neutral  | Naive Bayes: negative
+Text: "The meeting is scheduled to begin at ten in the morning."
+  -> True: neutral  | VADER: neutral  | Naive Bayes: positive
+Text: "The shipment was processed through the central distribution hub."
+  -> True: neutral  | VADER: neutral  | Naive Bayes: positive
+Text: "The product dimensions are ten by fifteen inches."
+  -> True: neutral  | VADER: neutral  | Naive Bayes: negative
+Text: "The buttons feel flimsy and get stuck frequently."
+  -> True: negative | VADER: negative | Naive Bayes: positive
+Text: "Incredible performance and very comfortable to use daily."
+  -> True: positive | VADER: positive | Naive Bayes: negative
+Text: "Simple to configure and worked right out of the packaging."
+  -> True: positive | VADER: neutral  | Naive Bayes: positive
+Text: "Very intuitive user interface, my parents learned it easily."
+  -> True: positive | VADER: positive | Naive Bayes: neutral 
+Text: "Cheap plastic materials that creak when held."
+  -> True: negative | VADER: neutral  | Naive Bayes: positive
+Text: "A complete joy to use every single day!"
+  -> True: positive | VADER: positive | Naive Bayes: negative
+Text: "Arrived damaged and the company refused to offer a refund."
+  -> True: negative | VADER: negative | Naive Bayes: neutral 
+Text: "Unusable app with constant bugs and slow response times."
+  -> True: negative | VADER: neutral  | Naive Bayes: negative

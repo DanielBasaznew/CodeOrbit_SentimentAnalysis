@@ -1,35 +1,41 @@
-# CodeOrbit Sentiment Analysis Pipeline (Day 5 - Part 1)
+# CodeOrbit Sentiment Analysis & Evaluation Pipeline (Day 6)
 
-A comparative dual-approach natural language processing pipeline evaluating rule-based sentiment classification (**VADER**) against supervised machine learning (**TF-IDF + Multinomial Naive Bayes**).
+A comparative NLP benchmarking suite evaluating rule-based sentiment classification (**VADER**) against supervised machine learning (**TF-IDF + Multinomial Naive Bayes**).
 
 ## System Architecture
 
-### Approach A: VADER (Lexicon & Rule-Based)
-- **Heuristic Valence Scoring:** Leverages a curated lexicon mapping tokens to emotional intensity.
-- **Rule Modifiers:** Adjusts polarity based on punctuation, ALL-CAPS emphasis, and grammatical negations (e.g., "not good").
-- **Decision Boundaries:**
-  - Positive: $\ge 0.05$
-  - Negative: $\le -0.05$
-  - Neutral: between $-0.05$ and $0.05$
-
-### Approach B: TF-IDF + Multinomial Naive Bayes (Supervised ML)
-- **Feature Extraction:** `TfidfVectorizer` computes word importance scaled by document rarity, with stop-word filtering.
-- **Probabilistic Classification:** `MultinomialNB` estimates posterior class probabilities under a naive feature independence assumption.
-- **Stratified Split:** Data split 80/20 with `stratify=df['label']` and fixed random seed (`random_state=42`).
+- **Approach A (VADER):** Rule-based emotional valence analyzer using punctuation, capitalization, and negation heuristics.
+- **Approach B (TF-IDF + Naive Bayes):** Supervised scikit-learn pipeline using term-frequency inverse-document-frequency weighting and multinomial probability estimation.
+- **Evaluation Suite:** Generates stratified confusion matrices, class distribution plots, classification reports, and automated error audits.
 
 ---
 
-## Dataset Characteristics
-- **Total Records:** 73 labeled text samples in `reviews.csv`.
-- **Class Balance:**
-  - Positive: 25 samples
-  - Negative: 24 samples
-  - Neutral: 24 samples
+## Dataset & Distribution
+- **Dataset Size:** 73 labeled reviews across positive, neutral, and negative targets.
+- **Split:** Stratified 80% train (58 samples), 20% test (15 samples).
+
+![Class Distribution](label_distribution.png)
+
+---
+
+## Empirical Benchmark Summary
+
+| Metric | VADER | Naive Bayes |
+|---|---|---|
+| **Test Accuracy** | **80.00%** | **33.33%** |
+| **Positive F1** | **0.75** | 0.36 |
+| **Neutral F1** | **0.77** | 0.25 |
+| **Negative F1** | **0.89** | 0.36 |
+| **Macro Average F1** | **0.80** | 0.33 |
+
+![Confusion Matrices](confusion_matrices.png)
+
+For detailed per-class breakdowns, test sentence audits, and failure root-cause analysis, read the full [REPORT.md](REPORT.md).
 
 ---
 
 ## How to Run
 
-1. Activate virtual environment:
+1. Activate your virtual environment:
    ```bash
    source .venv/Scripts/activate  # On Windows Git Bash

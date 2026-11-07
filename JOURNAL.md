@@ -1,45 +1,43 @@
-# Engineering Journal — Day 5: Sentiment Analysis Pipeline (Part 1)
+# Engineering Journal — Day 6: Evaluation Suite & Findings Report
 
 ## 1. What I Studied
-- **Rule-Based Lexicons (VADER):** How valence dictionaries and heuristic modifiers calculate normalized compound polarity scores within $[-1.0, 1.0]$.
-- **TF-IDF Vectorization:** Balancing Term Frequency with Inverse Document Frequency to weight discriminative terms over ubiquitous vocabulary.
-- **Multinomial Naive Bayes:** Supervised classification applying Bayes' rule under conditional word independence assumptions.
-- **Stratification:** Splitting training and testing sets while preserving identical target class distributions.
+- **Metric Limitations:** Why accuracy hides minority class collapse and why precision, recall, and F1-score are necessary for multi-class tasks.
+- **Confusion Matrices:** Analyzing false positives and false negatives across a 3x3 contingency grid.
+- **Data Scarcity in NLP:** Observed how statistical models (Naive Bayes) fail when evaluation vocabulary is missing from small training sets.
 
 ## 2. Core Notes
-1. **VADER Scoring:** Uses dictionary lookups and grammatical rules without requiring prior training.
-2. **VADER Decision Thresholds:** Positive ($\ge 0.05$), Negative ($\le -0.05$), and Neutral (between $-0.05$ and $0.05$).
-3. **TF-IDF Mechanism:** Suppresses high-frequency stop words and elevates informative terms specific to individual classes.
-4. **Data Starvation in Naive Bayes:** A small training set (58 samples) leads to vocabulary sparsity, resulting in 100% training accuracy but random-guess baseline performance (33.33%) on unseen test sets.
-5. **Contextual Limitations:** Sarcasm remains a systemic failure mode for both word-level statistical bags and fixed-lexicon rule sets.
+1. **Precision:** True Positives / (True Positives + False Positives); evaluates prediction reliability.
+2. **Recall:** True Positives / (True Positives + False Negatives); evaluates class coverage.
+3. **F1-Score:** The harmonic mean of precision and recall.
+4. **Holdout Evaluation:** Evaluating both models on the identical stratified test split ensures fair, unskewed comparisons.
+5. **Zero-Valence Heuristic:** VADER reliably classifies factual statements as neutral because factual descriptions lack emotional tokens.
 
 ## 3. What I Built
-- Configured `CodeOrbit_SentimentAnalysis` with isolated `.venv` and frozen dependencies.
-- Created `reviews.csv` with 73 balanced rows across positive, negative, and neutral classes.
-- Implemented `sentiment.py` containing:
-  - Text normalization preserving punctuation for VADER.
-  - VADER compound scorer (`vader_classify`).
-  - Scikit-learn pipeline chaining `TfidfVectorizer` and `MultinomialNB`.
-  - Side-by-side inference comparator (`predict_both`).
+- Upgraded `sentiment.py` to:
+  - Generate and export dataset balance charts (`label_distribution.png`).
+  - Compute `accuracy_score`, `classification_report`, and `confusion_matrix`.
+  - Render dual confusion matrices (`confusion_matrices.png`).
+  - Output automated failure audits and export exact metrics to `results.txt`.
+- Authored a one-page comparative findings document (`REPORT.md`).
 
 ## 4. Tests Run & Empirical Findings
-- **Generalization Gap:** Naive Bayes attained 100% training accuracy vs 33.33% testing accuracy due to unseen test tokens.
-- **Negation Verification:** `"Not good at all"` correctly resolved to negative in VADER due to proximity negation rules.
-- **Sarcasm Failure:** `"Great, another delay..."` yielded false positive classifications across both models.
-- **Mixed Clause Divergence:** `"Good but too expensive..."` produced model disagreement (VADER: positive `0.24` vs. Naive Bayes: negative).
-- **Edge Conditions:** Handled empty string inputs and short tokens (`"OK"`) safely.
+- **VADER Accuracy:** 80.00% (12/15 correct). Flawless precision on positive (1.00) and negative (1.00), with 100% recall on neutral statements.
+- **Naive Bayes Accuracy:** 33.33% (5/15 correct). Collapsed to random-chance performance due to vocabulary sparsity on a 58-row training split.
+- **Key Discrepancies:**
+  - VADER missed descriptive physical flaws lacking explicit emotional tokens (*"creak"* in *"Cheap plastic materials..."*).
+  - Naive Bayes misclassified factual neutral statements (*"dimensions"*, *"meeting"*, *"shipment"*) as polar sentiments.
 
 ## 5. End-to-End Explanation (5 Lines)
-1. `sentiment.py` ingests and balances `reviews.csv` across positive, negative, and neutral targets.
-2. Text undergoes whitespace normalization while preserving punctuation.
-3. Approach A runs `SentimentIntensityAnalyzer`, checking the compound value against the $[-0.05, 0.05]$ boundaries.
-4. Approach B converts training strings to numerical sparse matrices via `TfidfVectorizer` and fits a `MultinomialNB` classifier.
-5. The comparison routine iterates over novel test strings, printing predictions from both models.
+1. `sentiment.py` loads `reviews.csv` and renders `label_distribution.png`.
+2. The dataset is split into an 80/20 stratified holdout set using a fixed random seed.
+3. Naive Bayes is trained on the training split, while VADER processes the test set using lexicon rules.
+4. Precision, recall, F1, and confusion matrices are generated for both approaches and exported to `confusion_matrices.png` and `results.txt`.
+5. Misclassified test sentences are audited and analyzed in `REPORT.md`.
 
 ## 6. What I Don't Understand Yet / Next Steps
-- How n-grams (bigrams/trigrams) in `TfidfVectorizer(ngram_range=(1, 2))` improve negation handling in Naive Bayes.
-- Methods to mitigate extreme overfitting on sparse corpora using Laplace smoothing or expanded training datasets.
+- Implementing cross-validation (`cross_val_score`) to produce confidence intervals on small datasets.
+- Exploring sub-word tokenization (Byte-Pair Encoding) to reduce out-of-vocabulary failures.
 
-## 7. Tomorrow's Plan (Day 6: Task 5, Part 2)
-- Generate a confusion matrix, classification report, and calculate accuracy, precision, and recall metrics.
-- Produce a structured one-page findings report evaluating VADER vs. Naive Bayes.
+## 7. Tomorrow's Plan (Day 7: Task 4 - Recommendation System)
+- Choose between a curated table of 15–20 movies/books or the MovieLens dataset.
+- Build a content-based recommendation engine using cosine similarity.
