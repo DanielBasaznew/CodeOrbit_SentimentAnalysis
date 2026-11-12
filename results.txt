@@ -10,9 +10,9 @@ Approach B: Naive Bayes Test Accuracy  : 33.33%
 VADER Classification Report:
               precision    recall  f1-score   support
 
-    positive       1.00      0.60      0.75         5
+    positive       1.00      0.80      0.89         5
      neutral       0.62      1.00      0.77         5
-    negative       1.00      0.80      0.89         5
+    negative       1.00      0.60      0.75         5
 
     accuracy                           0.80        15
    macro avg       0.88      0.80      0.80        15

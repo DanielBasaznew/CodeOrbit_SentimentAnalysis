@@ -109,8 +109,12 @@ def run_evaluation_suite(data_path: str = "reviews.csv") -> None:
     acc_nb = accuracy_score(y_test, y_pred_nb)
     acc_vader = accuracy_score(y_test, y_pred_vader)
 
-    rep_nb = classification_report(y_test, y_pred_nb, target_names=labels, zero_division=0)
-    rep_vader = classification_report(y_test, y_pred_vader, target_names=labels, zero_division=0)
+    rep_nb = classification_report(
+        y_test, y_pred_nb, labels=labels, target_names=labels, zero_division=0
+    )
+    rep_vader = classification_report(
+        y_test, y_pred_vader, labels=labels, target_names=labels, zero_division=0
+    )
 
     cm_nb = confusion_matrix(y_test, y_pred_nb, labels=labels)
     cm_vader = confusion_matrix(y_test, y_pred_vader, labels=labels)

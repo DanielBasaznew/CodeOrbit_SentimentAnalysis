@@ -19,9 +19,9 @@ Both models were evaluated on the exact same 15-sample stratified holdout test s
 | Metric | VADER (Rule-Based) | TF-IDF + Naive Bayes (Supervised) |
 |---|---|---|
 | **Overall Accuracy** | **80.00%** | **33.33%** |
-| **Positive Precision / Recall / F1** | **1.00** / 0.60 / **0.75** | 0.33 / 0.40 / 0.36 |
+| **Positive Precision / Recall / F1** | **1.00** / **0.80** / **0.89** | 0.33 / 0.40 / 0.36 |
 | **Neutral Precision / Recall / F1** | 0.62 / **1.00** / **0.77** | 0.33 / 0.20 / 0.25 |
-| **Negative Precision / Recall / F1** | **1.00** / 0.80 / **0.89** | 0.33 / 0.40 / 0.36 |
+| **Negative Precision / Recall / F1** | **1.00** / **0.60** / **0.75** | 0.33 / 0.40 / 0.36 |
 | **Macro Average F1** | **0.80** | 0.33 |
 
 ![Confusion Matrices](confusion_matrices.png)
